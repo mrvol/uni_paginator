@@ -1,6 +1,6 @@
 django-mypaginator
 ==================
 
-It is my version Pagenator for Django framework.
+It is my version Paginator for Django framework.
 
-Best Paginator. IMHO :)
+Best Paginator. For me :)
