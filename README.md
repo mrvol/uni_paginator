@@ -1,4 +1,4 @@
-django-mypaginator
+My version on django-paginator's
 ==================
 
 It is my version Paginator for Django framework.
