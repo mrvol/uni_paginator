@@ -10,12 +10,12 @@ Lazy data for lazy developers.
 
 Install
 ==================
-```
+```zsh
 pip install git+git://github.com/mrvol/uni_paginator
 ```
 Add in section INSTALLED_APPS yours settings.py:
 
-```
+```python
 INSTALLED_APPS = (
    ...
    'uni_paginator',
@@ -26,7 +26,7 @@ INSTALLED_APPS = (
 in settings.py let UNI_PAGINATOR_TEMPLATE name of template for page button, by default use value 'uni_paginator.html'
 For example:
 
-```
+```python
 UNI_PAGINATOR_TEMPLATE = 'whatever.html'
 ```
 Put your file in templates folder.
