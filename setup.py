@@ -10,7 +10,7 @@ setup(
     author='Vladimir Ageykin',
     author_email='mrvol777@gmail.com',
     packages=['uni_paginator'],  # find_packages(), #['uni_paginator',],
-    package_data={'uni_paginator': ['templates/**', 'templatetags']},
+    package_data={'uni_paginator': ['templates/**', 'templatetags/**']},
     # scripts=,
     url='https://github.com/mrvol/uni_paginator',
     license='BSD',
