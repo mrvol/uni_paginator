@@ -63,7 +63,7 @@ Current uni_paginator.html contents on bootstrap style 3.X.X version:
 ```
 
 
-USE
+USE FOR QUERYSET AND SPHIX SEARCH
 ==================
 
 In template write:
@@ -84,6 +84,45 @@ In template write:
     
 {% pages blogs 10 'blogs_paged' %}  {# here will see page button too #}
     
+```
+
+
+USE SPHINX SEARCH
+==================
+
+   Use var with data as function with params request.GET and per_page.
+   Function must have attribute do_not_call_in_templates, because don't autocall in template.
+   For example:
+   
+   ```python
+   def func_not_call(func):
+    """
+    Disable call in template decorator
+    """
+    func.do_not_call_in_templates = True
+    return func
+
+   @func_not_call
+   def _help_view(request_get={}, per_page=10):
+       """
+       Mining data in sphinx search
+       """
+       page = int(request_get.get('page') or 1)
+       per_page = int(per_page or request_get.get('per_page', 10))
+       ...
+       result = make_query_by_sphinx(page, per_page)
+       ...
+       return result
+```
+
+   views.py
+   
+```python
+   def view(request)
+       """
+       Just view function
+       """
+       return _help_view
 ```
 
 Sorry for my English
