@@ -111,6 +111,11 @@ USE SPHINX SEARCH
        per_page = int(per_page or request_get.get('per_page', 10))
        ...
        result = make_query_by_sphinx(page, per_page)
+
+
+       for dct in result.get('matches', []):
+           dct.update(dct.get('attrs'))
+
        ...
        return result
 ```
