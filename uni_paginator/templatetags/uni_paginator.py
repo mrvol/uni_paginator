@@ -1,8 +1,9 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.defaulttags import register
 from django.utils.http import urlquote
 from django.conf import settings
+
 
 class MyPaginator(Paginator):
     """
@@ -17,6 +18,11 @@ class MyPaginator(Paginator):
             self.need_slice = False
             self._count = self.object_list['total']
             self.object_list = self.object_list.get('matches', [])
+        # from Solr
+        elif self.object_list.__class__.__name__ == 'Response' and hasattr(self.object_list, 'numFound'):
+            self.need_slice = False
+            self._count = getattr(self.object_list, 'numFound')
+            self.object_list = getattr(self.object_list, 'results', [])
         elif isinstance(self.object_list, dict) and len(self.object_list) == 0:
             self.need_slice = False
             self.object_list = []
@@ -42,7 +48,9 @@ def pages(context, queryset, num, var, page_obj=None):
     использовать так {% pages blogs 10 'blogs_paged' %}
     {% for blog in blogs_paged.object_list  %}
     """
-    if not var in context:  # если перемнной в контексте еще нет, значит дробим на страницы,иначе возвращяем уже раздробненное
+    # если перемнной в контексте еще нет,
+    # значит дробим на страницы, иначе возвращяем уже раздробненное
+    if var not in context:
 
         # queryset = queryset or []
 
@@ -98,7 +106,7 @@ def make_range(context, current, count_pages, var, range_value=3):
         end_num = current + range_value + 1
     numbers = range(start_num, end_num)
     context[var] = numbers
-    return ''# не возвращем ничего чтобы в темплейте не выводилось ничего лишнего
+    return ''  # не возвращем ничего чтобы в темплейте не выводилось ничего лишнего
 
 
 @register.simple_tag
