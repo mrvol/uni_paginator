@@ -7,13 +7,13 @@ from django.conf import settings
 
 class MyPaginator(Paginator):
     """
-    Мой педжинатор
+    My paginator
     """
     need_slice = True
 
-    def __init__(self, object_list, per_page, orphans=0, allow_empty_first_page=True):
+    def __init__(self, object_list, per_page, orphans=0, allow_empty_first_page=True, **kwargs):
         super(MyPaginator, self).__init__(object_list, per_page, orphans, allow_empty_first_page)
-        # если пришел словарь из Сфинкса
+        # a dict from Sphinx
         if isinstance(self.object_list, dict) and 'total' in self.object_list:
             self.need_slice = False
             self._count = self.object_list['total']
@@ -27,12 +27,11 @@ class MyPaginator(Paginator):
             self.need_slice = False
             self.object_list = []
 
-        # print len(self.object_list)
 
     def page(self, number):
         """
-        Если в self.object_list только данные со слайсом
-        то слайса делать не надо, иначе делаем
+        If there is only data with taken slice in self.object_list
+        not needed make a new one
         """
         if self.need_slice:
             return super(MyPaginator, self).page(number)
@@ -117,7 +116,7 @@ def preserve_get(get_params, exclude='page'):
     """
     exclude_params = exclude.split(',,')
     rez = []
-    for k, v in get_params.iteritems():
+    for k, v in get_params.items():
         if k not in exclude_params:
             rez.append('%s=%s' % (k, urlquote(v)))
 

@@ -1,19 +1,37 @@
-My version on django-paginator's
+My version of paginator for Django
 ==================
 
 It is my version Paginator for Django framework.
 
-Best Paginator. For me :)
-Use it with any data in QuerySet, List, Tuple and Sphinx Search dict.
-Also save other GET params, &limit=10&what=ever & etc.
-Lazy data for lazy developers.
+It's using very simple. For example, put it in your template:
+```
+{% load uni_paginator %}
+
+
+{% pages blogs 10 'blogs_paged' %} {# we'll be the pagination #}
+
+    ...
+    {% for blog in blogs_paged.object_list  %}
+
+     ...
+
+    {% endfor %}
+
+{% pages blogs 10 'blogs_paged' %}  {# we'll be the pagination as well #}
+
+```
+
+It's the best paginator. For me, of course :)
+You can use it with any data in a QuerySet, any iterable data and Solr/Sphinx Search as well.
+Also, it can pass all GET params, for example `&limit=10&what=ever` and others.
+It use lazy data pattern and the paginator is for lazy developers.
 
 Install
 ==================
 ```zsh
 pip install git+git://github.com/mrvol/uni_paginator
 ```
-Add in section INSTALLED_APPS yours settings.py:
+Add `uni_paginator` to INSTALLED_APPS section of settings.py:
 
 ```python
 INSTALLED_APPS = (
@@ -23,17 +41,16 @@ INSTALLED_APPS = (
    )
 ```
 
-in settings.py let UNI_PAGINATOR_TEMPLATE name of template for page button, by default use value 'uni_paginator.html'
+Also, set `UNI_PAGINATOR_TEMPLATE` filename template for pagination. By default it using value 'uni_paginator.html'.
 For example:
 
 ```python
 UNI_PAGINATOR_TEMPLATE = 'whatever.html'
 ```
-Put your file in templates folder.
 
-Current uni_paginator.html contents on bootstrap style 3.X.X version:
+Now, default uni_paginator.html contents on bootstrap style 3.X.X version.
+Bellow, you can see content of default template `uni_paginator.html`.
 ```
-{# button with number of pages #}
 {% load uni_paginator %}
 
 {% if query.paginator.num_pages > 1 %}
@@ -63,7 +80,7 @@ Current uni_paginator.html contents on bootstrap style 3.X.X version:
 ```
 
 
-USE FOR QUERYSET AND SPHIX SEARCH
+SO YOU CAN USE IT FOR QUERYSET AND SPHINX SEARCH
 ==================
 
 In template write:
@@ -73,7 +90,7 @@ In template write:
 {% load uni_paginator %}
 
 
-{% pages blogs 10 'blogs_paged' %} {# here will see page button #}
+{% pages blogs 10 'blogs_paged' %} {# we'll see pagination #}
 
     ...
     {% for blog in blogs_paged.object_list  %}
@@ -82,7 +99,7 @@ In template write:
     
     {% endfor %}
     
-{% pages blogs 10 'blogs_paged' %}  {# here will see page button too #}
+{% pages blogs 10 'blogs_paged' %}  {# we'll see pagination as well #}
     
 ```
 
@@ -91,13 +108,13 @@ USE SPHINX SEARCH
 ==================
 
    Use var with data as function with params request.GET and per_page.
-   Function must have attribute do_not_call_in_templates, because don't autocall in template.
+   Function must have attribute do_not_call_in_templates, because, it we want call it template only.
    For example:
    
    ```python
    def func_not_call(func):
     """
-    Disable call in template decorator
+    Enable execution in template only
     """
     func.do_not_call_in_templates = True
     return func
@@ -130,4 +147,4 @@ USE SPHINX SEARCH
        return _help_view
 ```
 
-Sorry for my English
+Sorry for my English, i learn it.
