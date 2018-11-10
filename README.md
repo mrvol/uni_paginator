@@ -1,150 +1,60 @@
-My version of paginator for Django
+My version of the Django Paginator
 ==================
 
-It is my version Paginator for Django framework.
+Using any paginator must be simple, right?
 
-It's using very simple. For example, put it in your template:
+So, tt is my version Paginator for Django Framework, what is very simple to use.
+
+It's very simple in using. Just install it and put the following construction in template:
 ```
-{% load uni_paginator %}
-
-
-{% pages blogs 10 'blogs_paged' %} {# we'll be the pagination #}
-
+{% load uni_paginator %} {# loading library #}
+{# 'pages' variable will be paginated and 'blogs_paged' variable will be added to context as a slice #}
+{% pages blogs 10 'blogs_paged' %} {# here will be added standard Pagingation Bootstrap widget #}
     ...
     {% for blog in blogs_paged.object_list  %}
-
-     ...
-
+     {# output blog #}
     {% endfor %}
 
-{% pages blogs 10 'blogs_paged' %}  {# we'll be the pagination as well #}
+{% pages blogs 10 'blogs_paged' %} {# That is the same construction as above, it need just for another output standard Pagingation Bootstrap widget #}
 
 ```
 
-It's the best paginator. For me, of course :)
-You can use it with any data in a QuerySet, any iterable data and Solr/Sphinx Search as well.
-Also, it can pass all GET params, for example `&limit=10&what=ever` and others.
-It use lazy data pattern and the paginator is for lazy developers.
+That's it.
 
-Install
+Features
 ==================
-```zsh
+
+Uni-paginator supports Django ORM QuerySet, Solr/Sphinx Search/Elastic search or any iterable data like lists, sets, etc.
+
+Also, it keeps any additional Get params in the url, like `&limit=10&what=ever`.
+It uses lazy data pattern and it is for lazy developers :-)
+
+Installation
+==================
+```sh
 pip install git+git://github.com/mrvol/uni_paginator
 ```
 Add `uni_paginator` to INSTALLED_APPS section of settings.py:
 
 ```python
 INSTALLED_APPS = (
-   ...
+   # ...
    'uni_paginator',
-   ...
+   # ...
    )
 ```
 
-Also, set `UNI_PAGINATOR_TEMPLATE` filename template for pagination. By default it using value 'uni_paginator.html'.
+
+Template customisation
+==================
+If you want to customise template, just redefine `UNI_PAGINATOR_TEMPLATE` variable in `settings.py`. By default it uses `uni_paginator.html` value.
 For example:
 
 ```python
 UNI_PAGINATOR_TEMPLATE = 'whatever.html'
 ```
 
-Now, default uni_paginator.html contents on bootstrap style 3.X.X version.
-Bellow, you can see content of default template `uni_paginator.html`.
-```
-{% load uni_paginator %}
+For now, default uni_paginator.html using Bootstrap style 3.X.X version.
+Please have a look into the file `templates/uni_paginator.html` as an example of template.
 
-{% if query.paginator.num_pages > 1 %}
-    <div class="text-center">
-            {% make_range query.number query.paginator.num_pages 'pages_number_list' %}
-            <ul class="pagination red">
-            {% if query.has_previous %}
-                <li><a href="?page=1{% preserve_get get_param 'page' %}" title="First page">« First</a></li>
-                <li><a href="?page={{ query.previous_page_number }}{% preserve_get get_param 'page' %}" title="Previors page"><strong>« First</strong></a></li>
-            {% endif %}
-            {% for i in pages_number_list %}
-                {% ifequal i query.number %}
-                    <li class="active"><a href="#">{{ query.number }}</a></li>
-                {% else %}
-                    <li><a href="?page={{ i }}{% preserve_get get_param 'page' %}">{{ i }}</a></li>
-                {% endifequal %}
-            {% endfor %}
-
-            {% if query.has_next %}
-                <li><a href="?page={{ query.next_page_number }}{% preserve_get get_param 'page' %}" title="Next page"><strong>»</strong></a></li>
-                <li><a href="?page={{ query.paginator.num_pages }}{% preserve_get get_param 'page' %}" title="Last page">Last »</a></li>
-            {% endif %}
-            </ul>
-    </div>
-{% endif %}
-
-```
-
-
-SO YOU CAN USE IT FOR QUERYSET AND SPHINX SEARCH
-==================
-
-In template write:
-
-
-```
-{% load uni_paginator %}
-
-
-{% pages blogs 10 'blogs_paged' %} {# we'll see pagination #}
-
-    ...
-    {% for blog in blogs_paged.object_list  %}
-    
-     ...
-    
-    {% endfor %}
-    
-{% pages blogs 10 'blogs_paged' %}  {# we'll see pagination as well #}
-    
-```
-
-
-USE SPHINX SEARCH
-==================
-
-   Use var with data as function with params request.GET and per_page.
-   Function must have attribute do_not_call_in_templates, because, it we want call it template only.
-   For example:
-   
-   ```python
-   def func_not_call(func):
-    """
-    Enable execution in template only
-    """
-    func.do_not_call_in_templates = True
-    return func
-
-   @func_not_call
-   def _help_view(request_get={}, per_page=10):
-       """
-       Mining data in sphinx search
-       """
-       page = int(request_get.get('page') or 1)
-       per_page = int(per_page or request_get.get('per_page', 10))
-       ...
-       result = make_query_by_sphinx(page, per_page)
-
-
-       for dct in result.get('matches', []):
-           dct.update(dct.get('attrs'))
-
-       ...
-       return result
-```
-
-   views.py
-   
-```python
-   def view(request)
-       """
-       Just view function
-       """
-       return _help_view
-```
-
-Sorry for my English, i learn it.
+Sorry for my English, I am studying it.

@@ -1,4 +1,4 @@
-{# shows boxes with page number #}
+{# displaing boxes with page number #}
 {% load uni_paginator %}
 
 {% if query.paginator.num_pages > 1 %}
@@ -6,8 +6,8 @@
             {% make_range query.number query.paginator.num_pages 'pages_number_list' %}
             <ul class="pagination red">
             {% if query.has_previous %}
-                <li><a href="?page=1{% preserve_get get_param 'page' %}" title="На первую страницу">« Первая</a></li>
-                <li><a href="?page={{ query.previous_page_number }}{% preserve_get get_param 'page' %}" title="На страницу назад"><strong>«</strong></a></li>
+                <li><a href="?page=1{% preserve_get get_param 'page' %}" title="To First Page">« First</a></li>
+                <li><a href="?page={{ query.previous_page_number }}{% preserve_get get_param 'page' %}" title="To the previous page"><strong>«</strong></a></li>
             {% endif %}
             {% for i in pages_number_list %}
                 {% ifequal i query.number %}
@@ -18,8 +18,8 @@
             {% endfor %}
 
             {% if query.has_next %}
-                <li><a href="?page={{ query.next_page_number }}{% preserve_get get_param 'page' %}" title="На страницу вперед"><strong>»</strong></a></li>
-                <li><a href="?page={{ query.paginator.num_pages }}{% preserve_get get_param 'page' %}" title="На последнюю страницу">Последняя »</a></li>
+                <li><a href="?page={{ query.next_page_number }}{% preserve_get get_param 'page' %}" title="To Next Page"><strong>»</strong></a></li>
+                <li><a href="?page={{ query.paginator.num_pages }}{% preserve_get get_param 'page' %}" title="To The Last Page">Last »</a></li>
             {% endif %}
             </ul>
     </div>
