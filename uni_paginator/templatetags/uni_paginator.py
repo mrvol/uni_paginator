@@ -46,7 +46,7 @@ class MyPaginator(Paginator):
 
 
 @register.inclusion_tag(getattr(settings, 'UNI_PAGINATOR_TEMPLATE', 'uni_paginator.html'), takes_context=True)
-def pages(context, queryset, num, var):
+def pages(context, queryset, num, var, *args, **kwargs):
     """
     This is the main tag does do all jobs.
     Creates HTML code with pages navigation on place
@@ -78,10 +78,12 @@ def pages(context, queryset, num, var):
             # If page is out of range (e.g. 9999), deliver last page of results.
             queryset_paged = paginator.page(paginator.num_pages)
 
-        # если есть у класса метод update_qs, то вызывем его
+        # if the class of QuerySet has update_qs method, so, time to call it
         if hasattr(queryset, 'model') and hasattr(queryset.model, 'update_qs'):
-            queryset_paged.object_list = queryset.model.update_qs(queryset_paged.object_list)
-        context[var] = queryset_paged  # отдаем в контекст список одной страницы
+            queryset_paged.object_list = queryset.model.update_qs(queryset_paged.object_list,
+                                                                  *args,
+                                                                  **kwargs)
+        context[var] = queryset_paged  # returning back a list of items for one page
 
         return {
             'query': context[var],
