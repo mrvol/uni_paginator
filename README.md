@@ -58,3 +58,5 @@ For now, default uni_paginator.html using Bootstrap style 3.X.X version.
 Please have a look into the file `templates/uni_paginator.html` as an example of template.
 
 Sorry for my English, I am studying it.
+
+[![Upload Python Package](https://github.com/mrvol/uni_paginator/actions/workflows/python-publish.yml/badge.svg?event=status)](https://github.com/mrvol/uni_paginator/actions/workflows/python-publish.yml)
