@@ -14,10 +14,15 @@ class MyPaginator(Paginator):
     def __init__(self, object_list, per_page, orphans=0, allow_empty_first_page=True, **kwargs):
         super(MyPaginator, self).__init__(object_list, per_page, orphans, allow_empty_first_page)
 
-        # a dict from Elastic Search
+        # data came from Elastic Search
         if isinstance(self.object_list, dict) and self.object_list.get('hits', {}).get('hits', None) is not None:
             self.need_slice = False
-            self._count = self.object_list['hits']['total']
+            total = self.object_list['hits']['total']
+            if isinstance(total, dict):
+                # ES > 7.x
+                self._count = self.object_list['hits']['total']['value']
+            else:
+                self._count = self.object_list['hits']['total']            
             self.object_list = self.object_list.get('hits', {}).get('hits', [])
         # a dict from Sphinx
         elif isinstance(self.object_list, dict) and 'total' in self.object_list:
