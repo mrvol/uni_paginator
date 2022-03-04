@@ -95,12 +95,14 @@ def pages(context, queryset, num, var, *args, **kwargs):
         return {
             'query': context[var],
             'get_param': context['request'].GET,
+            'param_name': param_name
             }
     # otherwise just returns stored data
     else:
         return {
             'query': context[var],
             'get_param': context['request'].GET,
+            'param_name': param_name
             }
 
 
