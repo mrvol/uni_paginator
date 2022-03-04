@@ -64,6 +64,9 @@ def pages(context, queryset, num, var, *args, **kwargs):
     :param var: the name of output variable
     :return:
     """
+
+    param_name = kwargs.get('param_name', 'page')
+
     # if it is first call of tag and the output variable does not exist in context yet. So, doing things...
     if var not in context:
 
@@ -72,7 +75,6 @@ def pages(context, queryset, num, var, *args, **kwargs):
 
         paginator = MyPaginator(queryset, num)
 
-        param_name = kwargs.get('param_name', 'page')
 
         page = context['request'].GET.get(param_name, 1)
         try:
