@@ -72,7 +72,9 @@ def pages(context, queryset, num, var, *args, **kwargs):
 
         paginator = MyPaginator(queryset, num)
 
-        page = context['request'].GET.get('page', 1)
+        param_name = kwargs.get('param_name', 'page')
+
+        page = context['request'].GET.get(param_name, 1)
         try:
             queryset_paged = paginator.page(page)
 
