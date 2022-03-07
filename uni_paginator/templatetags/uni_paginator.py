@@ -149,9 +149,11 @@ def preserve_get(get_params, exclude='page'):
 
     exclude_params = exclude.split(',,')
     rez = []
-    for k, v in get_params.items():
+    for k in get_params.keys():
         if k not in exclude_params:
-            rez.append('%s=%s' % (k, urlquote(v)))
+            value_list = get_params.getlist(k)
+            for v in value_list:
+                rez.append('%s=%s' % (k, urlquote(v)))
 
     if len(rez):
         return '&%s' % '&'.join(rez)
