@@ -64,6 +64,9 @@ def pages(context, queryset, num, var, *args, **kwargs):
     :param var: the name of output variable
     :return:
     """
+
+    param_name = kwargs.get('param_name', 'page')
+
     # if it is first call of tag and the output variable does not exist in context yet. So, doing things...
     if var not in context:
 
@@ -72,7 +75,8 @@ def pages(context, queryset, num, var, *args, **kwargs):
 
         paginator = MyPaginator(queryset, num)
 
-        page = context['request'].GET.get('page', 1)
+
+        page = context['request'].GET.get(param_name, 1)
         try:
             queryset_paged = paginator.page(page)
 
@@ -93,12 +97,14 @@ def pages(context, queryset, num, var, *args, **kwargs):
         return {
             'query': context[var],
             'get_param': context['request'].GET,
+            'param_name': param_name
             }
     # otherwise just returns stored data
     else:
         return {
             'query': context[var],
             'get_param': context['request'].GET,
+            'param_name': param_name
             }
 
 
@@ -143,9 +149,11 @@ def preserve_get(get_params, exclude='page'):
 
     exclude_params = exclude.split(',,')
     rez = []
-    for k, v in get_params.items():
+    for k in get_params.keys():
         if k not in exclude_params:
-            rez.append('%s=%s' % (k, urlquote(v)))
+            value_list = get_params.getlist(k)
+            for v in value_list:
+                rez.append('%s=%s' % (k, urlquote(v)))
 
     if len(rez):
         return '&%s' % '&'.join(rez)

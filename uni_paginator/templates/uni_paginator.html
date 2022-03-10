@@ -6,20 +6,20 @@
             {% make_range query.number query.paginator.num_pages 'pages_number_list' %}
             <ul class="pagination red">
             {% if query.has_previous %}
-                <li><a href="?page=1{% preserve_get get_param 'page' %}" title="To First Page">« First</a></li>
-                <li><a href="?page={{ query.previous_page_number }}{% preserve_get get_param 'page' %}" title="To the previous page"><strong>«</strong></a></li>
+                <li><a href="?{{ param_name }}=1{% preserve_get get_param param_name %}" title="To First Page">« First</a></li>
+                <li><a href="?{{ param_name }}={{ query.previous_page_number }}{% preserve_get get_param param_name %}" title="To the previous page"><strong>«</strong></a></li>
             {% endif %}
             {% for i in pages_number_list %}
                 {% ifequal i query.number %}
                     <li class="active"><a href="#">{{ query.number }}</a></li>
                 {% else %}
-                    <li><a href="?page={{ i }}{% preserve_get get_param 'page' %}">{{ i }}</a></li>
+                    <li><a href="?{{ param_name }}={{ i }}{% preserve_get get_param param_name %}">{{ i }}</a></li>
                 {% endifequal %}
             {% endfor %}
 
             {% if query.has_next %}
-                <li><a href="?page={{ query.next_page_number }}{% preserve_get get_param 'page' %}" title="To Next Page"><strong>»</strong></a></li>
-                <li><a href="?page={{ query.paginator.num_pages }}{% preserve_get get_param 'page' %}" title="To The Last Page">Last »</a></li>
+                <li><a href="?{{ param_name }}={{ query.next_page_number }}{% preserve_get get_param param_name %}" title="To Next Page"><strong>»</strong></a></li>
+                <li><a href="?{{ param_name }}={{ query.paginator.num_pages }}{% preserve_get get_param param_name %}" title="To The Last Page">Last »</a></li>
             {% endif %}
             </ul>
     </div>
