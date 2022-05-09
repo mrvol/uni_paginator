@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.template.defaulttags import register
-from django.utils.http import urlquote
+try:
+    from django.utils.http import urlquote
+except ImportError:
+    from urllib.parse import quote as urlquote
 from django.conf import settings
 
 
