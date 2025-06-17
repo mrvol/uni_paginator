@@ -10,11 +10,11 @@
                 <li><a href="?{{ param_name }}={{ query.previous_page_number }}{% preserve_get get_param param_name %}" title="To the previous page"><strong>«</strong></a></li>
             {% endif %}
             {% for i in pages_number_list %}
-                {% ifequal i query.number %}
+                {% if i == query.number %}
                     <li class="active"><a href="#">{{ query.number }}</a></li>
                 {% else %}
                     <li><a href="?{{ param_name }}={{ i }}{% preserve_get get_param param_name %}">{{ i }}</a></li>
-                {% endifequal %}
+                {% endif %}
             {% endfor %}
 
             {% if query.has_next %}
